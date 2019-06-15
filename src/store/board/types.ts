@@ -6,8 +6,6 @@ export interface BoardState {
   finished: boolean;
 }
 
-export const TAKE_MOVE = 'TAKE_MOVE';
-
 // Tuple containing x and y position of square on the board.
 type Position = [number, number];
 export interface Move {
@@ -15,6 +13,7 @@ export interface Move {
   position: Position;
 }
 
+export const TAKE_MOVE = 'TAKE_MOVE';
 export interface TakeMoveAction {
   type: typeof TAKE_MOVE;
   payload: Move;
