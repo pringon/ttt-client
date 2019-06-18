@@ -8,7 +8,7 @@ import {
 
 export const initialState: BoardState = {
   board: [
-    ['', '', ''],
+    ['', '', 'X'],
     ['', '', ''],
     ['', '', ''],
   ],
@@ -20,8 +20,9 @@ const takeMove = (board: Board, move: Move): Board => {
   if (board[x][y] !== '') {
     throw Error('Cannot take move on non-empty square');
   }
-  board[x][y] = symbol;
-  return board;
+  const newBoard = Array.from(board);
+  newBoard[x][y] = symbol;
+  return newBoard;
 };
 
 // Implementation required!
@@ -32,6 +33,7 @@ export const boardReducer = (state = initialState, action: TakeMoveAction): Boar
    case TAKE_MOVE:
     const newBoard = takeMove(state.board, action.payload);
     return {
+      ...state,
       board: newBoard,
       finished: isFinished(newBoard),
     };
