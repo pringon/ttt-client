@@ -1,11 +1,12 @@
 import React from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 import Square from './components/Square';
 
 import { AppState } from './store';
-import { BoardState, Move, Square as SquareSymbol, TakeMoveAction } from './store/board/types';
+import { BoardState, Move, Board, Square as SquareSymbol, TakeMoveAction } from './store/board/types';
 import { takeMove } from './store/board/actions';
 import { PlayerState } from './store/player/types';
 
@@ -27,8 +28,22 @@ const genMove = (symbol: SquareSymbol) =>
     position: [x, y],
 });
 
+const takeEngineMove = async (board: Board) => {
+  console.log(JSON.stringify(board));
+  const response = await axios.get('http://localhost:3001', { data: JSON.stringify(board) });
+  const movePosition: [number, number] = response.data;
+  if (!Array.isArray(movePosition) || movePosition.length !== 2) {
+    throw Error('Backend service is unavailable.');
+  }
+  const move = genMove('O')(...movePosition);
+  takeMove(move);
+};
+
 const App: React.FunctionComponent<AppProps> = ({ board, finished, acting, takeMove }) => {
   const genPlayerMove = genMove('X');
+  if (!acting) {
+    takeEngineMove(board);
+  }
   return (
     <div className="App"
       style={{

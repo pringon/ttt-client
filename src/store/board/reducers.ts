@@ -8,7 +8,7 @@ import {
 
 export const initialState: BoardState = {
   board: [
-    ['', '', 'X'],
+    ['', '', ''],
     ['', '', ''],
     ['', '', ''],
   ],
