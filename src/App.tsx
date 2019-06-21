@@ -1,13 +1,17 @@
 import React from 'react';
 
 import Board from './components/Board';
+import ScorePanel from './components/ScorePanel';
 
 const App = () => (
-  <Board 
+  <div
     style={{
-      marginTop: '25vh',
+      marginTop: '15vh',
     }}
-  />
+  >
+    <ScorePanel/>
+    <Board />
+  </div>
 );
 
 export default App;

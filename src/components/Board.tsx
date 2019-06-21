@@ -26,7 +26,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 });
 
 interface Props extends BoardState, PlayerState {
-  style: React.CSSProperties;
+  style?: React.CSSProperties;
   takeMove: (payload: Move) => TakeMoveAction;
 }
 
