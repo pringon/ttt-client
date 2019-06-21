@@ -51,6 +51,9 @@ const App: React.FunctionComponent<AppProps> = ({ board, finished, acting, takeM
   if (!acting) {
     takeEngineMove(board, takeMove);
   }
+  if (finished) {
+    return (<div>Congrats, you are a loser anyway!</div>)
+  }
   return (
     <div className="App"
       style={{
