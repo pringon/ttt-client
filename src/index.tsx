@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 
 import { store } from './store';
 
-import 'typeface-roboto';
+import 'roboto-fontface';
 import './index.css';
 
 import App from './App';
