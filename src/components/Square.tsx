@@ -1,21 +1,17 @@
 import React from 'react';
 
-import { Square as SquareSymbol, TakeMoveAction } from '../store/board/types';
+import { Square as SquareType, TakeMoveAction } from '../store/board/types';
 
 interface Props {
+  className: string;
   action?: () => TakeMoveAction;
-  symbol: SquareSymbol;
+  symbol: SquareType;
   acting: boolean;
 }
 
-const Square: React.FC<Props> = ({ symbol, acting, action }) => (
-  <div className='square'
-    style={{
-      width: '100px',
-      height: '100px',
-      border: '2px solid black',
-      float: 'left',
-    }}
+const Square: React.FC<Props> = ({ className, symbol, acting, action }) => (
+  <div 
+    className={className}
     onClick={acting ? action : undefined}
   >
     { symbol }
