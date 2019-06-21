@@ -1,20 +1,12 @@
-import { initialState as boardState, boardReducer } from './board/reducers';
-import { BoardState } from './board/types';
-import { createStore, combineReducers, Store } from 'redux';
+import { boardReducer } from './board/reducers';
+import { playerReducer } from './player/reducers';
+import { createStore, combineReducers } from 'redux';
 
 const rootReducer = combineReducers({
   board: boardReducer,
+  player: playerReducer,
 });
 
-interface RootState {
-  board: BoardState;
-}
-const defaultState: RootState = {
-  board: boardState,
-};
-
-export const configureStore = (state: RootState = defaultState): Store<RootState> => {
-  return createStore(rootReducer, state);
-};
+export const store = createStore(rootReducer);
 
 export type AppState = ReturnType<typeof rootReducer>;

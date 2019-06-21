@@ -1,0 +1,110 @@
+.score-panel {
+  /* Align score panel in the middle of its container */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 
+  ##Device = Desktops
+  ##Screen = 1281px to higher resolution desktops
+*/
+@media (min-width: 1281px) {
+  .score-panel {
+    height: 5vh;
+    width: 50vw;
+    margin-left: 25vw;
+    font-size: 3.6em;
+  }
+}
+
+/* 
+  ##Device = Laptops, Desktops
+  ##Screen = B/w 1025px to 1280px
+*/
+@media (min-width: 1024px) and (max-width: 1280px) {
+  .score-panel {
+    height: 5vh;
+    width: 50vw;
+    margin-left: 25vw;
+    font-size: 3.3em;
+  }
+}
+
+/* 
+  ##Device = Ipads (portrait)
+  ##Screen = 1024px
+*/
+@media (min-width: 1024px) and (max-width: 1024px) {
+  .score-panel {
+    height: 5vh;
+    width: 60vw;
+    margin-left: 20vw;
+    font-size: 3.2em;
+  }
+}
+
+/* 
+  ##Device = Tablets
+  ##Screen = B/w 768px to 1023px
+*/
+@media (min-width: 768px) and (max-width: 1023px) {
+  .score-panel {
+    height: 5vh;
+    width: 60vw;
+    margin-left: 20vw;
+    font-size: 2.4em;
+  }
+}
+
+/* 
+  ##Device = Tablets
+  ##Screen = B/w 768px to 1024px
+*/
+@media (min-width: 768px) and (max-width: 1023px) and (orientation: landscape) {
+  .score-panel {
+    height: 7vh;
+    width: 50vw;
+    margin-left: 25vw;
+    font-size: 2em;
+  }
+}
+
+/* 
+  ##Device = Low Resolution Tablets
+  ##Screen = B/w 481px to 767px
+*/
+@media (min-width: 481px) and (max-width: 767px) {
+  .score-panel {
+    height: 5vh;
+    width: 60vw;
+    margin-left: 20vw;
+    font-size: 1.5em;
+  }
+}
+
+/* 
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+@media (min-width: 320px) and (max-width: 480px) {
+  .score-panel {
+    height: 5vh;
+    width: 90vw;
+    margin-left: 5vw;
+    font-size: 1.5em;
+  }
+}
+
+/* 
+  ##Device = Most of the Smartphones Mobiles (Landscape)
+  ##Screen = B/w 320px to 767px
+*/
+@media (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+  .score-panel {
+    height: 10vh;
+    width: 60vw;
+    margin-left: 20vw;
+    font-size: 1.8em;
+  }
+}

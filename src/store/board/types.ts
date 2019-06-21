@@ -1,4 +1,4 @@
-type Square = 'X' | 'O' | '';
+export type Square = 'X' | 'O' | '';
 export type Board = Square[][];
 
 export interface BoardState {

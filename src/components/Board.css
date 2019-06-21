@@ -1,0 +1,122 @@
+.row {
+  height: 33%;
+}
+
+.square {
+  width: 33%;
+  height: 100%;
+  /* Include border size in the height and width of the element */
+  box-sizing: border-box;
+  border: 1px solid black;
+  float: left;
+  /* Align X/O symbols in the center of the square */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 100;
+}
+
+/* 
+  ##Device = Desktops
+  ##Screen = 1281px to higher resolution desktops
+*/
+@media (min-width: 1281px) {
+  .board {
+    height: 60vh;
+    width: 50vw;
+    margin-left: 25vw;
+  }
+  .square {
+    font-size: 8em;
+  }
+}
+
+/* 
+  ##Device = Laptops, Desktops
+  ##Screen = B/w 1025px to 1280px
+*/
+@media (min-width: 1025px) and (max-width: 1280px) {
+  .board {
+    height: 60vh;
+    width: 50vw;
+    margin-left: 25vw;
+  }
+  .square {
+    font-size: 8em;
+  }
+}
+
+/* 
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+@media (min-width: 768px) and (max-width: 1024px) {
+  .board {
+    height: 60vh;
+    width: 60vw;
+    margin-left: 20vw;
+  }
+  .square {
+    font-size: 8em;
+  }
+}
+
+/* 
+  ##Device = Tablets, Ipads (landscape)
+  ##Screen = B/w 768px to 1024px
+*/
+@media (min-width: 768px) and (max-width: 1023px) and (orientation: landscape) {
+  .board {
+    height: 60vh;
+    width: 50vw;
+    margin-left: 25vw;
+  }
+  .square {
+    font-size: 4em;
+  }
+}
+
+/* 
+  ##Device = Low Resolution Tablets
+  ##Screen = B/w 481px to 767px
+*/
+@media (min-width: 481px) and (max-width: 767px) {
+  .board {
+    height: 60vh;
+    width: 60vw;
+    margin-left: 20vw;
+  }
+  .square {
+    font-size: 4em;
+  }
+}
+
+/* 
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+@media (min-width: 320px) and (max-width: 480px) {
+  .board {
+    height: 50vh;
+    width: 90vw;
+    margin-left: 5vw;
+  }
+  .square {
+    font-size: 4em;
+  }
+}
+
+/* 
+  ##Device = Most of the Smartphones Mobiles (Landscape)
+  ##Screen = B/w 320px to 767px
+*/
+@media (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+  .board {
+    height: 60vh;
+    width: 60vw;
+    margin-left: 20vw;
+  }
+  .square {
+    font-size: 3em;
+  }
+}
