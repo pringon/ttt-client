@@ -63,10 +63,10 @@ const validateBody = (body: any): EngineResponse => {
     throw Error(`Property draw is expected to be a boolean. It is instead a ${typeof draw}.`);
   }
   if (!!winner && winner != 'X' && winner != 'O') {
-    throw Error('Unexpected winner symbol. Expecting either X or O.');
+    throw Error(`Unexpected winner symbol ${winner}. Expecting either X or O.`);
   }
   if (!!move && !Array.isArray(move) && (move.length != 2 || typeof move[0] != 'number' || typeof move[1] != 'number')) {
-    throw Error('Unexpected move type. Expecting a tuple of the form [number, number].');
+    throw Error(`Unexpected move format ${move}. Expecting a tuple of the form [number, number].`);
   }
   return body;
 };
@@ -97,13 +97,19 @@ const takeEngineMove = async (
   };
   const response = await fetch('http://localhost:3001/', options);
   const rawBody = await response.text();
-  const body: EngineResponse = validateBody(JSON.parse(rawBody));
-  const { winner, move, draw } = body;
-  if (!!move) {
-    handleMove(takeMove, move);
+  try {
+    const body: EngineResponse = validateBody(JSON.parse(rawBody));
+    const { winner, move, draw } = body;
+    if (!!move) {
+      handleMove(takeMove, move);
+    }
+    handleRecord(gameEnded, draw, winner,);
+  } catch (err) {
+    if (err.constructor == SyntaxError) {
+      throw Error(`Could not parse body: ${rawBody}. ${err.message}`);
+    }
+    throw err;
   }
-  handleRecord(gameEnded, draw, winner,);
-
 };
 
 const Board: React.FunctionComponent<Props> = ({ style, board, acting, takeMove, gameEnded }) => {
