@@ -3,11 +3,10 @@ export type Board = Square[][];
 
 export interface BoardState {
   board: Board;
-  finished: boolean;
 }
 
 // Tuple containing x and y position of square on the board.
-type Position = [number, number];
+export type Position = [number, number];
 export interface Move {
   symbol: Square;
   position: Position;

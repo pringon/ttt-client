@@ -15,7 +15,7 @@
     "react-redux": "5.1.0",
     "react-scripts": "3.0.1",
     "redux": "4.0.1",
-    "redux-devtools-extension": "2.13.5",
+    "redux-devtools-extension": "^2.13.5",
     "roboto-fontface": "^0.10.0",
     "serve": "^11.0.2"
   },

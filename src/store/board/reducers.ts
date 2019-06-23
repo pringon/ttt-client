@@ -1,19 +1,23 @@
 import {
   Board,
+  Square,
   Move,
   BoardState,
   TakeMoveAction,
   TAKE_MOVE,
 } from './types';
+import {
+  GameEndedAction,
+  GAME_ENDED,
+} from '../player/types';
 
-export const initialState: BoardState = {
-  board: [
-    ['', '', ''],
-    ['', '', ''],
-    ['', '', ''],
-  ],
-  finished: false,
-};
+const clearBoard: Board = [
+  ['', '', ''],
+  ['', '', ''],
+  ['', '', ''],
+];
+
+const wipeBoard = (): Board => clearBoard.map(row => Array.from(row));
 
 const takeMove = (board: Board, move: Move): Board => {
   const { symbol, position: [x, y] } = move;
@@ -28,19 +32,23 @@ const takeMove = (board: Board, move: Move): Board => {
   return newBoard;
 };
 
-// Implementation required!
-const isFinished = ({ position: [x, y] }: Move) => x === 99 && y === 99;
+export const initialState: BoardState = {
+  board: wipeBoard(),
+};
 
-export const boardReducer = (state = initialState, action: TakeMoveAction) => {
- switch (action.type) {
-   case TAKE_MOVE:
-    const newBoard = takeMove(state.board, action.payload);
-    return {
-      ...state,
-      board: newBoard,
-      finished: isFinished(action.payload),
-    };
-   default:
-    return state;
+type BoardAction = TakeMoveAction | GameEndedAction
+export const boardReducer = (state = initialState, action: BoardAction) => {
+  switch (action.type) {
+    case TAKE_MOVE:
+      const newBoard = takeMove(state.board, action.payload);
+      return Object.assign({}, state, {
+        board: newBoard,
+      });
+    case GAME_ENDED:
+      return Object.assign({}, state, {
+        board: wipeBoard(),
+      });
+    default:
+      return state;
  }
 };

@@ -8,14 +8,20 @@ import Square from './Square';
 
 import { AppState } from '../store';
 import { takeMove } from '../store/board/actions';
+import { gameEnded } from '../store/player/actions';
 import {
   BoardState,
+  Position,
   Move,
   Board as BoardType,
   Square as SquareType,
-  TakeMoveAction
+  TakeMoveAction,
 } from '../store/board/types';
-import { PlayerState } from '../store/player/types';
+import { 
+  PlayerState,
+  Record,
+  GameEndedAction
+} from '../store/player/types';
 
 const mapStateToProps = (state: AppState) => ({
   ...state.board,
@@ -23,11 +29,23 @@ const mapStateToProps = (state: AppState) => ({
 });
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   takeMove: (payload: Move) => dispatch(takeMove(payload)),
+  gameEnded: (payload: Record) => dispatch(gameEnded(payload)),
 });
 
-interface Props extends BoardState, PlayerState {
+type TakeMoveDispatcher = (payload: Move) => TakeMoveAction;
+type GameEndedDispatcher = (payload: Record) => GameEndedAction;
+
+interface Props extends BoardState {
   style?: React.CSSProperties;
-  takeMove: (payload: Move) => TakeMoveAction;
+  acting: PlayerState['acting'];
+  takeMove: TakeMoveDispatcher;
+  gameEnded: GameEndedDispatcher;
+}
+
+interface EngineResponse {
+  winner?: SquareType;
+  move?: Position;
+  draw: boolean;
 }
 
 const genMove = (symbol: SquareType) => 
@@ -36,32 +54,68 @@ const genMove = (symbol: SquareType) =>
     position: [x, y],
 });
 
-const takeEngineMove = async (board: BoardType, takeMove: (payload: Move) => TakeMoveAction) => {
-  console.log(JSON.stringify(board));
-  const response = await fetch('http://localhost:3001/', { 
+const validateBody = (body: any): EngineResponse => {
+  if (!body) {
+    throw Error('Request body could not be properly parsed.');
+  }
+  const { draw, winner, move } = body;
+  if (typeof draw != 'boolean') {
+    throw Error(`Property draw is expected to be a boolean. It is instead a ${typeof draw}.`);
+  }
+  if (!!winner && winner != 'X' && winner != 'O') {
+    throw Error(`Unexpected winner symbol ${winner}. Expecting either X or O.`);
+  }
+  if (!!move && !Array.isArray(move) && (move.length != 2 || typeof move[0] != 'number' || typeof move[1] != 'number')) {
+    throw Error(`Unexpected move format ${move}. Expecting a tuple of the form [number, number].`);
+  }
+  return body;
+};
+
+const handleMove = (takeMove: TakeMoveDispatcher, movePosition: Position) => {
+  const move = genMove('O')(...(movePosition));
+  takeMove(move);
+}
+
+const handleRecord = (gameEnded: GameEndedDispatcher,draw: boolean, winner?: SquareType,) => {
+  if (!!winner) {
+    return gameEnded(winner == 'X' ? 'wins' : 'losses');
+  }
+  if (draw) {
+    return gameEnded('draws');
+  }
+}
+
+const takeEngineMove = async (
+  board: BoardType, takeMove: TakeMoveDispatcher, gameEnded: GameEndedDispatcher
+) => {
+  const options: RequestInit = { 
     method: 'POST',
     headers: {
       'Content-Type': 'text/plain',
     },
     body: JSON.stringify(board),
-  });
+  };
+  const response = await fetch('http://localhost:3001/', options);
   const rawBody = await response.text();
-  const movePosition: [number, number] = JSON.parse(rawBody);
-  console.log(movePosition);
-  if (!Array.isArray(movePosition) || movePosition.length !== 2) {
-    throw Error('Backend service is unavailable.');
+  try {
+    const body: EngineResponse = validateBody(JSON.parse(rawBody));
+    const { winner, move, draw } = body;
+    if (!!move) {
+      handleMove(takeMove, move);
+    }
+    handleRecord(gameEnded, draw, winner,);
+  } catch (err) {
+    if (err.constructor == SyntaxError) {
+      throw Error(`Could not parse body: ${rawBody}. ${err.message}`);
+    }
+    throw err;
   }
-  const move = genMove('O')(...movePosition);
-  takeMove(move);
 };
 
-const Board: React.FunctionComponent<Props> = ({ style, board, finished, acting, takeMove }) => {
+const Board: React.FunctionComponent<Props> = ({ style, board, acting, takeMove, gameEnded }) => {
   const genPlayerMove = genMove('X');
   if (!acting) {
-    takeEngineMove(board, takeMove);
-  }
-  if (finished) {
-    return (<div>Congrats, you are a loser anyway!</div>)
+    takeEngineMove(board, takeMove, gameEnded);
   }
   return (
     <div 
