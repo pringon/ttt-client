@@ -21,7 +21,7 @@
   },
   "scripts": {
     "start": "serve -l 3000 build",
-    "dev": "react-scripts start",
+    "dev": "npm i && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
