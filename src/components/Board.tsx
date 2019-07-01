@@ -135,7 +135,7 @@ const Board: React.FunctionComponent<Props> = ({ style, board, acting, takeMove,
                 }
                 return (
                   <Square 
-                    className='square'
+                    className='square no-highlight'
                     acting={acting} 
                     action={action} 
                     key={`${row}-${col}`} 
